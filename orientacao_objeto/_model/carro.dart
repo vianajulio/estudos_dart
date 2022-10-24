@@ -2,24 +2,37 @@ import 'dart:io';
 
 class Carro {
   final int velocidadeMaxima;
-  int velocidadeAtual;
+  int _velocidadeAtual = 0;
 
-  Carro({required this.velocidadeMaxima, this.velocidadeAtual = 0});
+  Carro({required this.velocidadeMaxima});
+
+  int get velocidadeAtual {
+    return this._velocidadeAtual;
+  }
+
+  void set velocidadeAtual(int novaVelocidade) {
+    bool deltaValido = (_velocidadeAtual - novaVelocidade).abs() / 5 == 0;
+    if (deltaValido) {
+    this._velocidadeAtual = novaVelocidade;
+    } else {
+      print('acelere de 5 em 5 km/h!');
+    }
+  }
 
   int acelerar(int acelerarAte) {
-    for (; velocidadeAtual < acelerarAte;) {
-      velocidadeAtual += 5;
-      print(velocidadeAtual);
+    for (; _velocidadeAtual < acelerarAte;) {
+      _velocidadeAtual += 5;
+      print(_velocidadeAtual);
     }
-    return velocidadeAtual;
+    return _velocidadeAtual;
   }
 
   int freiar(int freiarAte) {
-    for (; velocidadeAtual > freiarAte;) {
-      velocidadeAtual -= 5;
-      print(velocidadeAtual);
+    for (; _velocidadeAtual > freiarAte;) {
+      _velocidadeAtual -= 5;
+      print(_velocidadeAtual);
     }
-    return velocidadeAtual;
+    return _velocidadeAtual;
   }
 }
 
@@ -37,21 +50,21 @@ class AcaoCarro extends Carro {
       velocidade = int.parse(stdin.readLineSync().toString());
       velocidade > velocidadeMaxima
           ? print('Seu limite para acelerar é ${velocidadeMaxima}km/h !!!')
-          : velocidade < velocidadeAtual
-              ? print('Acelere acima de ${velocidadeAtual}km/h')
+          : velocidade < _velocidadeAtual
+              ? print('Acelere acima de ${_velocidadeAtual}km/h')
               : acelerar(velocidade);
-      print('Velocidade atual: ${velocidadeAtual}');
+      print('Velocidade atual: ${_velocidadeAtual}');
     } else if (acao == 'F') {
       print(
-          'Deseja freiar até que velocidade? (Velocidade atual: ${velocidadeAtual}km/h)');
+          'Deseja freiar até que velocidade? (Velocidade atual: ${_velocidadeAtual}km/h)');
       velocidade = int.parse(stdin.readLineSync().toString());
 
       velocidade < 0
           ? print('Seu limite para freiar até 0km/h')
-          : velocidade > velocidadeAtual
-              ? print('Reduza até no máximo $velocidadeAtual')
+          : velocidade > _velocidadeAtual
+              ? print('Reduza até no máximo $_velocidadeAtual')
               : freiar(velocidade);
-      print('Velocidade atual: ${velocidadeAtual}');
+      print('Velocidade atual: ${_velocidadeAtual}');
     } else {
       print('Digite "A" para acelerar e "F" para freiar!');
     }
@@ -60,8 +73,8 @@ class AcaoCarro extends Carro {
   }
 
   limite() {
-    if (velocidadeAtual == velocidadeMaxima) {
-      print('Você está no limite, à ${velocidadeAtual}km/h');
+    if (_velocidadeAtual == velocidadeMaxima) {
+      print('Você está no limite, à ${_velocidadeAtual}km/h');
     } else {
       print('Acelera ai poxa :)');
     }
